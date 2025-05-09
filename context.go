@@ -155,6 +155,10 @@ func (r *Reader) Close() error {
 		r.zstd.freeDStream(r.stream)
 		r.stream = nil
 	}
+	if r.ctx != nil {
+		r.zstd.freeDCtx(r.ctx)
+		r.ctx = nil
+	}
 	return nil
 }
 
@@ -263,6 +267,13 @@ func (w *Writer) Flush() error {
 
 // Close implements the io.Closer interface
 func (w *Writer) Close() error {
+	defer func() {
+		if w.ctx != nil {
+			w.zstd.freeCCtx(w.ctx)
+			w.ctx = nil
+		}
+	}()
+
 	if w.stream == nil {
 		return nil
 	}
