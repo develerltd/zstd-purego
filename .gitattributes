@@ -1,0 +1,3 @@
+# Specifically mark the zstd libraries as binary
+libs/linux_amd64_glibc2.17/libzstd.so.1 binary
+libs/darwin_arm64/libzstd.dylib binary
